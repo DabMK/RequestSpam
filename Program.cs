@@ -39,11 +39,12 @@
             string? output = string.Empty; bool records = false;
             Console.Write("File where to output records (leave empty for no file output): ");
             output = Console.ReadLine();
+            output = output.Replace('"', ' ');
             if (!string.IsNullOrWhiteSpace(output) && Directory.Exists(Path.GetDirectoryName(output)))
             {
                 if (File.Exists(output))
                 {
-                    Console.Write($"- The file \"{output}\" already exists. Do you want to override the content (Y/N)?");
+                    Console.WriteLine($"- The file \"{output}\" already exists. Do you want to override the content (Y/N)?");
                     char selection = Console.ReadKey().KeyChar;
                     if (selection == 'y')
                     {
@@ -81,7 +82,7 @@
                 {
                     content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-                    if ((!content.Contains("<pre>") || !content.Contains("</pre>")) || content.Contains("couldn't be found"))
+                    if (!content.Contains("<pre>") || !content.Contains("</pre>") || content.Contains("couldn't be found"))
                     {
                         content = "Not Authenticated";
                     }
